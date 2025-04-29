@@ -32,11 +32,8 @@ connectDB();
 //     })
 // );
 const allowedOrigins = [
-    'https://khambenh.webkhactu.top',
     'http://localhost:3000', // Local development
-    'http://localhost:3003', // Local development
-    'http://localhost:3001', // Local development
-    'https://frontend-react-kham-benh.vercel.app', // Production
+    'http://localhost:3002', // Local development
 ];
 
 app.use(cors({
