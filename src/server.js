@@ -12,8 +12,8 @@ const multer = require("multer");
 const path = require("path");
 const Doctor = require("./model/Doctor");
 const cron = require("node-cron");
-// const moment = require('moment');
-import moment from "moment-timezone";
+const moment = require("moment");
+// import moment from "moment-timezone";
 const KhamBenh = require("./model/KhamBenh");
 
 require("dotenv").config();

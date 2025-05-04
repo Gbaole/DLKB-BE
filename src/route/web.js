@@ -1,15 +1,14 @@
 // route/web.js
-const express = require('express');
-import loginAdmin from '../controllers/Login/login.admin.controller';
+const express = require("express");
+// import loginAdmin from '../controllers/Login/login.admin.controller';
+const loginAdmin = require("../controllers/Login/login.admin.controller");
 const router = express.Router();
 
-
-
 let initWebRoutes = (app) => {
-    // rest api
-    router.post("/api/login-admin", loginAdmin.loginAccAdmin );
+  // rest api
+  router.post("/api/login-admin", loginAdmin.loginAccAdmin);
 
-    app.use("/", router);  
+  app.use("/", router);
 };
 
 module.exports = initWebRoutes;
