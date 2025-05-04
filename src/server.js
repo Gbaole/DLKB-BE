@@ -23,16 +23,18 @@ let port = process.env.PORT || 6969;
 
 connectDB();
 
-// Cài đặt CORS
+// CORS
 // app.use(
 //     cors({
-//       origin: "http://localhost:3000", // Thay bằng domain của frontend
+//       origin: "http://localhost:3000",
 //       credentials: true,
 //     })
 // );
 const allowedOrigins = [
   "http://localhost:3000", // Local development
-  "http://localhost:3002", // Local development
+  "http://localhost:3002",
+  "dlkb-fe-customer.vercel.app", // Production frontend customer and admin
+  "dlkb-fe-doctor.vercel.app", // Production frontend doctor
 ];
 
 app.use(
