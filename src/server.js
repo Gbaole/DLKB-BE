@@ -33,8 +33,8 @@ connectDB();
 const allowedOrigins = [
   "http://localhost:3000", // Local development
   "http://localhost:3002",
-  "dlkb-fe-customer.vercel.app", // Production frontend customer and admin
-  "dlkb-fe-doctor.vercel.app", // Production frontend doctor
+  "https://dlkb-fe-customer.vercel.app",
+  "https://dlkb-fe-doctor.vercel.app",
 ];
 
 app.use(
