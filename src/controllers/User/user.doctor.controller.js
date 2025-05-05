@@ -11,7 +11,6 @@ const { VNPay, ProductCode, VnpLocale, ignoreLogger } = require("vnpay");
 require("dotenv").config();
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Types;
-// Secret key cho JWT
 const JWT_SECRET = process.env.JWT_SECRET;
 // const moment = require('moment');
 const moment = require("moment-timezone");
@@ -27,14 +26,14 @@ const formatCurrency = (amount) => {
 };
 
 const transporter = nodemailer.createTransport({
-  service: "gmail", // Chọn dịch vụ email như Gmail
+  service: "gmail",
   auth: {
-    user: "quanthqdev@gmail.com",
-    pass: "jiotxdnucyulkxoh",
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
-// Hàm gửi email thông báo
+//Gửi email thông báo
 const sendAppointmentEmail = async (
   email,
   patientName,
@@ -52,8 +51,8 @@ const sendAppointmentEmail = async (
   sdtPK
 ) => {
   const mailOptions = {
-    from: "ADMIN", // Người gửi
-    to: email, // Người nhận là email bệnh nhân
+    from: "ADMIN",
+    to: email,
     subject: "Xác nhận lịch khám",
     html: `
             <h2>Thông tin lịch khám</h2>
@@ -104,6 +103,7 @@ const sendAppointmentEmail = async (
   // Gửi email
   try {
     await transporter.sendMail(mailOptions);
+
     console.log("Email đã được gửi thành công!");
   } catch (error) {
     console.error("Lỗi khi gửi email:", error);
@@ -418,13 +418,11 @@ module.exports = {
           doctor.phongKhamId.sdtPK
         );
 
-        return res
-          .status(200)
-          .json({
-            message:
-              "Cập nhật trạng thái lịch khám thành công và email đã được gửi.",
-            data: updatedAccount,
-          });
+        return res.status(200).json({
+          message:
+            "Cập nhật trạng thái lịch khám thành công và email đã được gửi.",
+          data: updatedAccount,
+        });
       } else {
         return res.status(404).json({ message: "Lịch khám không tìm thấy." });
       }
@@ -496,12 +494,10 @@ module.exports = {
 
         // Check if there's an overlap
         if (newStartTime < existingEndTime && newEndTime > existingStartTime) {
-          return res
-            .status(400)
-            .json({
-              message:
-                "Có vẻ lịch khám này đã có bệnh nhân đăng ký rồi. Vui lòng chọn thời gian khác.",
-            });
+          return res.status(400).json({
+            message:
+              "Có vẻ lịch khám này đã có bệnh nhân đăng ký rồi. Vui lòng chọn thời gian khác.",
+          });
         }
       }
 
@@ -643,12 +639,10 @@ module.exports = {
 
         // Check if there's an overlap
         if (newStartTime < existingEndTime && newEndTime > existingStartTime) {
-          return res
-            .status(400)
-            .json({
-              message:
-                "Có vẻ lịch khám này đã có bệnh nhân đăng ký rồi. Vui lòng chọn thời gian khác.",
-            });
+          return res.status(400).json({
+            message:
+              "Có vẻ lịch khám này đã có bệnh nhân đăng ký rồi. Vui lòng chọn thời gian khác.",
+          });
         }
       }
 
@@ -741,13 +735,11 @@ module.exports = {
         vnp_Locale: VnpLocale.VN,
       });
 
-      return res
-        .status(200)
-        .json({
-          message: "Đặt lịch khám thành công!",
-          data: datlich,
-          paymentUrl,
-        });
+      return res.status(200).json({
+        message: "Đặt lịch khám thành công!",
+        data: datlich,
+        paymentUrl,
+      });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Có lỗi xảy ra!", error });
@@ -1514,12 +1506,10 @@ module.exports = {
 
       // Save changes
       await doctor.save();
-      return res
-        .status(200)
-        .json({
-          message: "Cập nhật lịch trình khám bệnh thành công!",
-          data: doctor,
-        });
+      return res.status(200).json({
+        message: "Cập nhật lịch trình khám bệnh thành công!",
+        data: doctor,
+      });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Có lỗi xảy ra!", error });
@@ -1597,12 +1587,10 @@ module.exports = {
       // Lưu thay đổi
       await doctor.save();
 
-      return res
-        .status(200)
-        .json({
-          message: "Cập nhật lịch trình khám bệnh thành công!",
-          data: doctor,
-        });
+      return res.status(200).json({
+        message: "Cập nhật lịch trình khám bệnh thành công!",
+        data: doctor,
+      });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Có lỗi xảy ra!", error });
@@ -1646,12 +1634,10 @@ module.exports = {
       // Lưu thay đổi
       await doctor.save();
 
-      return res
-        .status(200)
-        .json({
-          message: "Đã xóa các lịch trình cũ thành công!",
-          data: doctor,
-        });
+      return res.status(200).json({
+        message: "Đã xóa các lịch trình cũ thành công!",
+        data: doctor,
+      });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Có lỗi xảy ra!", error });
@@ -1698,12 +1684,10 @@ module.exports = {
           timeGioList,
         });
       } else {
-        return res
-          .status(200)
-          .json({
-            message: "Không có thời gian khám cho ngày này!",
-            timeSlots: [],
-          });
+        return res.status(200).json({
+          message: "Không có thời gian khám cho ngày này!",
+          timeSlots: [],
+        });
       }
     } catch (error) {
       console.error(error);
@@ -1824,12 +1808,10 @@ module.exports = {
 
         // Check if there's an overlap
         if (newStartTime < existingEndTime && newEndTime > existingStartTime) {
-          return res
-            .status(400)
-            .json({
-              message:
-                "Có vẻ lịch khám này đã có bệnh nhân đăng ký rồi. Vui lòng chọn thời gian khác.",
-            });
+          return res.status(400).json({
+            message:
+              "Có vẻ lịch khám này đã có bệnh nhân đăng ký rồi. Vui lòng chọn thời gian khác.",
+          });
         }
       }
 
