@@ -16,13 +16,11 @@ module.exports = {
 
       if (!tk_doimk) {
         console.log("Không tồn tại tài khoản");
-        return res
-          .status(404)
-          .json({
-            message:
-              "Không tồn tại tài khoản! Vui lòng kiểm tra lại email của bạn.",
-            data: false,
-          });
+        return res.status(404).json({
+          message:
+            "Không tồn tại tài khoản! Vui lòng kiểm tra lại email của bạn.",
+          data: false,
+        });
       }
 
       // Tạo mật khẩu
@@ -81,13 +79,11 @@ module.exports = {
 
       if (!tk_doimk) {
         console.log("Không tồn tại tài khoản");
-        return res
-          .status(404)
-          .json({
-            message:
-              "Không tồn tại tài khoản! Vui lòng kiểm tra lại email của bạn.",
-            data: false,
-          });
+        return res.status(404).json({
+          message:
+            "Không tồn tại tài khoản! Vui lòng kiểm tra lại email của bạn.",
+          data: false,
+        });
       }
 
       // Tạo mật khẩu

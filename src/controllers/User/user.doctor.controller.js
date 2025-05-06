@@ -5,6 +5,7 @@ const ChuyenKhoa = require("../../model/ChuyenKhoa");
 const ChucVu = require("../../model/ChucVu");
 const Role = require("../../model/Role");
 const Doctor = require("../../model/Doctor");
+const DoctorBuilder = require("../../utils/DoctorBuilder");
 const ThoiGianGio = require("../../model/ThoiGianGio");
 const PhongKham = require("../../model/PhongKham");
 const { VNPay, ProductCode, VnpLocale, ignoreLogger } = require("vnpay");
@@ -15,8 +16,11 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // const moment = require('moment');
 const moment = require("moment-timezone");
 const KhamBenh = require("../../model/KhamBenh");
-
 const nodemailer = require("nodemailer");
+const {
+  VietNamPatientFee,
+  ForeignPatientFee,
+} = require("../../utils/FeeStrategy");
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat("vi-VN", {
@@ -986,11 +990,6 @@ module.exports = {
         mota,
       } = req.body;
 
-      console.log("chucVuId: ", chucVuId);
-      console.log("chuyenKhoaId: ", chuyenKhoaId);
-      console.log("giaKhamVN: ", giaKhamVN);
-      console.log("giaKhamNuocNgoai: ", giaKhamNuocNgoai);
-
       if (!email || !password || !firstName || !lastName) {
         return res.status(400).json({
           message:
@@ -998,45 +997,51 @@ module.exports = {
         });
       }
 
-      const existingDoctor = await Doctor.findOne({ email: email });
+      const existingDoctor = await Doctor.findOne({ email });
       if (existingDoctor) {
-        return res.status(409).json({
-          message: "Email đã tồn tại. Vui lòng sử dụng email khác.",
-        });
+        return res
+          .status(409)
+          .json({ message: "Email đã tồn tại. Vui lòng sử dụng email khác." });
       }
 
-      // Hash the password
+      // Strategy Pattern cho giá khám
+      if (!giaKhamVN) {
+        const vnStrategy = new VietNamPatientFee();
+        giaKhamVN = vnStrategy.calculateFee();
+      }
+
+      if (!giaKhamNuocNgoai) {
+        const foreignStrategy = new ForeignPatientFee();
+        giaKhamNuocNgoai = foreignStrategy.calculateFee();
+      }
+
+      // Mã hóa mật khẩu
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      let createDoctor = await Doctor.create({
-        email,
-        password: hashedPassword,
-        firstName,
-        lastName,
-        address,
-        phoneNumber,
-        chucVuId: chucVuId || [],
-        gender,
-        image,
-        chuyenKhoaId: chuyenKhoaId || [],
-        phongKhamId,
-        roleId,
-        mota,
-        giaKhamVN,
-        giaKhamNuocNgoai,
-      });
+      // Dùng Builder Pattern để tạo doctor
+      const builder = new DoctorBuilder()
+        .setEmail(email)
+        .setPassword(hashedPassword)
+        .setFirstName(firstName)
+        .setLastName(lastName)
+        .setAddress(address)
+        .setPhoneNumber(phoneNumber)
+        .setGiaKhamVN(giaKhamVN)
+        .setGiaKhamNuocNgoai(giaKhamNuocNgoai)
+        .setChucVuId(chucVuId)
+        .setGender(gender)
+        .setImage(image)
+        .setChuyenKhoaId(chuyenKhoaId)
+        .setPhongKhamId(phongKhamId)
+        .setRoleId(roleId)
+        .setMoTa(mota);
 
-      if (createDoctor) {
-        console.log("thêm thành công tài khoản");
-        return res.status(200).json({
-          data: createDoctor,
-          message: "Thêm tài khoản bác sĩ thành công",
-        });
-      } else {
-        return res.status(404).json({
-          message: "Thêm tài khoản bác sĩ thất bại",
-        });
-      }
+      const createDoctor = await Doctor.create(builder.build());
+
+      return res.status(201).json({
+        data: createDoctor,
+        message: "Thêm tài khoản bác sĩ thành công",
+      });
     } catch (error) {
       console.error(error);
       return res.status(500).json({

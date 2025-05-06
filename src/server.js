@@ -15,7 +15,6 @@ const cron = require("node-cron");
 const moment = require("moment");
 // import moment from "moment-timezone";
 const KhamBenh = require("./model/KhamBenh");
-
 require("dotenv").config();
 
 let app = express();
@@ -24,7 +23,7 @@ let port = process.env.PORT || 6969;
 connectDB();
 
 const allowedOrigins = [
-  "http://localhost:3000", // Local development
+  "http://localhost:3000",
   "http://localhost:3002",
   "https://dlkb-fe-customer.vercel.app",
   "https://dlkb-fe-doctor.vercel.app",
