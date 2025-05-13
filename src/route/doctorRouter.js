@@ -43,7 +43,7 @@ router.delete("/delete-doctor/:id", userDoctor.deleteDoctor);
 
 // tim bac si thong qua id chuyen khoa
 router.get("/doctor-chuyen-khoa", userDoctor.fetchDoctorByChuyenKhoa);
-router.get("/fetch-phong-kham-by-id", userDoctor.fetchPhongKhamByID);
+router.get("/fetch-phong-kham-by-id", clinicController.fetchPhongKhamByID);
 router.get("/doctor-phong-kham", userDoctor.fetchDoctorByPhongKham);
 router.put("/edit-thongtinkham", userDoctor.updateTTBN);
 

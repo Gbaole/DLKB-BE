@@ -1,15 +1,11 @@
 const bcrypt = require("bcrypt");
-const ChuyenKhoa = require("../../model/ChuyenKhoa");
-const ChucVu = require("../../model/ChucVu");
 const Doctor = require("../../model/Doctor");
 const ThoiGianGio = require("../../model/ThoiGianGio");
 const PhongKham = require("../../model/PhongKham");
 require("dotenv").config();
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Types;
 const moment = require("moment-timezone");
 const KhamBenh = require("../../model/KhamBenh");
-
 const nodemailer = require("nodemailer");
 
 const formatCurrency = (amount) => {
@@ -601,26 +597,6 @@ const getTimeSlotsByDoctorAndDate = async (req, res) => {
   }
 };
 
-// API phòng khám
-const fetchPhongKhamByID = async (req, res) => {
-  let id = req.query.id;
-  console.log("id pk: ", id);
-  try {
-    const pk = await PhongKham.findById(id);
-
-    if (!pk) {
-      return res.status(404).json({ message: "Phong Kham không tồn tại!" });
-    }
-    return res.status(200).json({
-      message: "Đã tìm thấy Phong Kham",
-      data: pk,
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Có lỗi xảy ra!", error });
-  }
-};
-
 // API cập nhật thông tin bệnh nhân
 const updateTTBN = async (req, res) => {
   try {
@@ -717,6 +693,5 @@ module.exports = {
   addTimeKhamBenhDoctor,
   deleteOldTimeSlots,
   getTimeSlotsByDoctorAndDate,
-  fetchPhongKhamByID,
   updateTTBN,
 };

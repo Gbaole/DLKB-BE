@@ -1,5 +1,4 @@
 const express = require("express");
-// import cauHoi from '../controllers/CauHoi/cau.hoi.controller';
 const router = express.Router();
 const cauHoi = require("../controllers/CauHoi/cau.hoi.controller");
 router.post("/create-cau-hoi", cauHoi.createCauHoi);
