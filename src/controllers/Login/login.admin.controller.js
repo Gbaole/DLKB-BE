@@ -42,8 +42,8 @@ module.exports = {
 
       // Lưu token vào cookie
       res.cookie("token", token, {
-        httpOnly: true, // Bảo mật hơn khi chỉ có server mới có thể truy cập cookie này
-        secure: process.env.NODE_ENV === "production", // Chỉ cho phép cookie qua HTTPS nếu là production
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
         maxAge: parseInt(process.env.MAXAGE), // 1 giờ
       });
 
