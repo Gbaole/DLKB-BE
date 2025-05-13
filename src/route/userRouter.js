@@ -1,8 +1,4 @@
 const express = require("express");
-// import loginAdmin from '../controllers/Login/login.admin.controller';
-// import loginDoctor from '../controllers/Login/login.doctor.controller';
-// import loginBenhNhan from '../controllers/Login/login.user.controller';
-// import { quenMatKhauBN, quenMatKhauDoctor } from '../controllers/Login/quen.password.controller';
 const loginAdmin = require("../controllers/Login/login.admin.controller");
 const loginDoctor = require("../controllers/Login/login.doctor.controller");
 const loginBenhNhan = require("../controllers/Login/login.user.controller");

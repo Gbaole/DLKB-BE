@@ -90,8 +90,8 @@ router.put("/edit-thongtinkham", userDoctor.updateTTBN);
 router.post("/thong-ke", userDoctor.doanhThu);
 
 router.get("/vnpay_return", async (req, res) => {
-  const vnp_TxnRef = req.query.vnp_TxnRef; // Lấy mã giao dịch từ callback
-  const vnp_ResponseCode = req.query.vnp_ResponseCode; // Lấy mã phản hồi từ VNPay
+  const vnp_TxnRef = req.query.vnp_TxnRef;
+  const vnp_ResponseCode = req.query.vnp_ResponseCode;
 
   console.log("vnp_TxnRef: ", vnp_TxnRef);
 
@@ -113,10 +113,6 @@ router.get("/vnpay_return", async (req, res) => {
     res.send(
       "Thanh toán không thành công, đã đặt đơn nhưng chưa được thanh toán"
     );
-    // res.status(400).json({
-    //     message: 'Thanh toán không thành công, đã đặt đơn nhưng chưa được thanh toán',
-    //     redirectUrl: '/mycart'
-    // });
   }
 });
 
